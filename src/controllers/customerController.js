@@ -61,8 +61,8 @@ exports.create = async(req, res) => {
         }
 
         let result = await service.create(req.body);
-        if(result != undefined){
-            res.status(201).send({
+        if(result !== undefined){
+            res.status(201).send( {
                 message: "Cliente cadastrado com sucesso"
             });
         }
@@ -81,6 +81,12 @@ exports.create = async(req, res) => {
 
 exports.update = async(req,res) => {
     try{
+        let {errors} = validationResult(req);
+
+        if(errors.length > 0){
+            return res.status(400).send({ message: errors });
+        }
+
         let result = await service.update(req.params.id, req.body);
         if(result != undefined){
             res.status(200).send({
@@ -100,6 +106,12 @@ exports.update = async(req,res) => {
 
 exports.delete = async(req, res) => {
     try{
+        let {errors} = validationResult(req);
+        
+        if(errors.length > 0){
+            return res.status(400).send({ message: errors });
+        }
+
         let result = await service.delete(req.params.id);
         if(result != undefined){
             res.status(200).send({

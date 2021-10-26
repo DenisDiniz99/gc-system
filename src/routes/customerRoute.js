@@ -10,17 +10,22 @@ router.get('/customersActived', controller.getByActiveStatus);
 
 router.get('/:id', controller.getById);
 
-router.post('/', [check('name.firstName').isEmpty().withMessage("O campo Nome é obrigatório"),
-                    check('name.firstName').isString().withMessage("Nome em formato inválido"),
-                    check('name.lastName').isEmpty().withMessage("O campo Nome é obrigatório"),
-                    check('name.lastName').isString().withMessage("Nome em formato inválido"),
-                    check('document.documentType').isEmpty().withMessage("O campo Documento é obrigatório"),
-                    check('document.documentNumber').isEmpty().withMessage("O campo Documento é obrigatório"),
+router.post('/', [check('name.firstName').notEmpty().withMessage('O campo Nome é obrigatório'),
+                    check('name.lastName').notEmpty().withMessage('O campo Sobrenome é obrigatório'),
+                    check('document.documentNumber').notEmpty().withMessage('O campo Documento é obrigatório'),
+                    check('email').notEmpty().withMessage('O campo E-mail é obrigatório'),
                     check('email').isEmail().withMessage("E-mail em formato inválido")], 
+
                     controller.create);
 
-router.put('/:id', controller.update);
+router.put('/:id', [check('name.firstName').notEmpty().withMessage('O campo Nome é obrigatório'),
+                        check('name.lastName').notEmpty().withMessage('O campo Sobrenome é obrigatório'),
+                        check('document.documentNumber').notEmpty().withMessage('O campo Documento é obrigatório'),
+                        check('email').notEmpty().withMessage('O campo E-mail é obrigatório'),
+                        check('email').isEmail().withMessage("E-mail em formato inválido")],
+                        
+                        controller.update);
 
-router.delete('/:id', controller.delete);
+router.delete('/:id', [check('id').isMongoId().withMessage('ID do cliente inválido')], controller.delete);
 
 module.exports = router;    

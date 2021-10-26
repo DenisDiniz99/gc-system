@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const configConn = require('./config/connection');
 const app = express();
+require('dotenv').config();
 
 
 //carrega a conexão com o banco
@@ -30,11 +31,13 @@ app.use(bodyParser.json());
 //carrega as rotas;
 const indexRoute = require('./routes/index');
 const customerRoute = require('./routes/customerRoute');
+const userRoute = require('./routes/userRoute');
 
 
 //configura as rotas
 app.use('/', indexRoute);
 app.use('/customers', customerRoute);
+app.use('/user', userRoute);
 
 
 //Inicializa o servidor

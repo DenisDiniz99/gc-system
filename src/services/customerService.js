@@ -19,7 +19,7 @@ exports.getById = async(id) => {
 }
 
 exports.create = async(data) => {
-    var customer = new Customer(data);
+    let customer = new Customer(data);
     let result = await customer.save();
     return result;
 }
