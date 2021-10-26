@@ -10,7 +10,7 @@ exports.create = async(dataUser) => {
     let user = new User();
 
     user.email = dataUser.email;
-    user.password = md5(dataUser.password + global.ACCESS_TOKEN);
+    user.password = md5(dataUser.password + process.env.JWT_KEY);
     user.role = dataUser.role;
 
     let result = await user.save();
@@ -21,7 +21,7 @@ exports.create = async(dataUser) => {
 exports.signIn = async(dataUser) => {
     let user = User.findOne({
         email: dataUser.email,
-        password: md5(dataUser.password + global.ACCESS_TOKEN),
+        password: md5(dataUser.password + process.env.JWT_KEY),
         role: dataUser.role
     });
 
