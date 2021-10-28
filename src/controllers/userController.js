@@ -2,6 +2,7 @@ const service = require('../services/authService');
 const { validationResult } = require('express-validator');
 const auth = require('../services/Auth/Auth');
 
+//Cria um novo usuário
 exports.create = async(req, res, next) =>{
     try{
         let {errors} = validationResult(req);
@@ -51,10 +52,14 @@ exports.signIn = async(req, res, next) =>{
             });
         }
 
+
+        console.log(user);
         let token = await auth.generateToken(user);
 
+        
+
         return res.status(200).send({
-            message: success,
+            message: "Usuário autenticado com sucesso",
             token: token
         });
         

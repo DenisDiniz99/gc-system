@@ -1,11 +1,15 @@
 const jwt = require('jsonwebtoken');
+const KEY = process.env.SECRET;
+ 
 
 exports.generateToken = async(user) => {
-    return jwt.sign(user, process.env.JWT_KEY , { expiresIn: 100000 });
+    const email = user.email;
+    const role = user.role;
+    return jwt.sign({email, role}, KEY , { expiresIn: 100000 });
 }
 
 exports.decodedToken = async(token) => {
-    var data = await jwt.verify(token, process.env.JWT_KEY );
+    var data = jwt.verify(token, KEY );
     return data;
 }
 
@@ -17,7 +21,7 @@ exports.authorize = function(req, res, next) {
             message: 'Acesso restrito'
         });
     } else {
-        jwt.verify(token, process.env.JWT_KEY , function(error, decoded) {
+        jwt.verify(token, KEY , function(error, decoded) {
             if(error){
                 res.status(401).json({
                     message: 'Token inválido'
@@ -37,7 +41,7 @@ exports.isAdmin = function(req, res, next){
             message: 'Acesso restrito'
         });
     } else{
-        jwt.verify(token, process.env.JWT_KEY , function(error, decoded){
+        jwt.verify(token, KEY , function(error, decoded){
             if(error){
                 res.status(401).json({
                     message: 'Token inválido'

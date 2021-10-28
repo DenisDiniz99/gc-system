@@ -6,6 +6,7 @@ const app = express();
 require('dotenv').config();
 
 
+
 //carrega a conexão com o banco
 mongoose.connect(configConn.conn)
         .then(() => {
