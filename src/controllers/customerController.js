@@ -1,9 +1,21 @@
 const service = require('../services/customerService');
 const { validationResult } = require('express-validator');
+const jwt = require('../services/Auth/Auth');
 
+
+//Função para retornar todos os clientes
 exports.getAll = async(req, res) => {
     try{
+        //Faz a chamada da função que verifica se existe token
+        //Caso exista, verifica se ele é válido
+        //Caso seja válido, libera a busca de clientes
+        jwt.authorize(req, res);
+
+        //Caso exista um token válido
+        //Faz-se a busca por clientes
         let data = await service.getAll();
+        //Se existir clientes cadastrados retorna os mesmos
+        //Senão envia uma mensagem de clientes não encontrados
         if(data.length > 0){
             res.status(200).send(data);
         }else{
@@ -18,9 +30,14 @@ exports.getAll = async(req, res) => {
     }
 }
 
+
+//Função para retornar clientes com status ativo
 exports.getByActiveStatus = async(req, res) => {
     try{
+        jwt.authorize(req, res);
+
         let data = await service.getByActiveStatus();
+
         if(data.length > 0){
             res.status(200).send(data);
         }else{
@@ -35,10 +52,15 @@ exports.getByActiveStatus = async(req, res) => {
     }
 }
 
+
+//Função para retornar Clientes por Id
 exports.getById = async(req, res) => {
     try{
+        jwt.authorize(req, res);
+
         var data = await service.getById(req.params.id);
-        if(data != undefined){
+
+        if(data.length > 0){
             res.status(200).send(data);
         }else{
             res.status(400).send({
@@ -52,8 +74,14 @@ exports.getById = async(req, res) => {
     }
 }
 
+
+//Função para Criar um novo Cliente na base de dados
 exports.create = async(req, res) => {
     try{
+        //Verifica se o usuário possui um token válido
+        //E sendo válido, se o usuário possui direitos de admin
+        jwt.isAdmin(req, res);
+
         let {errors} = validationResult(req);
         
         if(errors.length > 0){
@@ -79,6 +107,8 @@ exports.create = async(req, res) => {
     }
 }
 
+
+//Função para atualizar dados do cliente
 exports.update = async(req,res) => {
     try{
         let {errors} = validationResult(req);
@@ -104,6 +134,8 @@ exports.update = async(req,res) => {
     }
 }
 
+
+//Função para deletar um cliente
 exports.delete = async(req, res) => {
     try{
         let {errors} = validationResult(req);

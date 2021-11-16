@@ -27,13 +27,13 @@ exports.authorize = function(req, res, next) {
                     message: 'Token inválido'
                 });
             }else{
-                next();
+                res.status(200);
             }
         });
     }
 }
 
-exports.isAdmin = function(req, res, next){
+exports.isAdmin = function(req, res){
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if(!token){
@@ -48,7 +48,7 @@ exports.isAdmin = function(req, res, next){
                 });
             }else{
                 if(decoded.roles.include('admin')){
-                    next();
+                    res.status(200);
                 }else{
                     res.status(403).json({
                         message: 'Esta funcionalidade é restrita para administradores'
