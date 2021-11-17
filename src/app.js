@@ -33,12 +33,14 @@ app.use(bodyParser.json());
 const indexRoute = require('./routes/index');
 const customerRoute = require('./routes/customerRoute');
 const userRoute = require('./routes/userRoute');
+const productRoute = require('./routes/productRoute');
 
 
 //configura as rotas
 app.use('/', indexRoute);
 app.use('/customers', customerRoute);
 app.use('/user', userRoute);
+app.use('/product', productRoute);
 
 
 //Inicializa o servidor

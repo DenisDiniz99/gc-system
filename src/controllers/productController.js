@@ -1,6 +1,8 @@
 const service = require('../services/productService');
 const { validationResult } = require('express-validator');
 const jwt = require('../services/Auth/Auth');
+const multer = require('multer');
+const upload = multer({ dest: 'img /' });
 
 exports.getAll = async(req, res) => {
     try{
@@ -90,3 +92,4 @@ exports.create = async(req, res) => {
         });
     }
 }
+
