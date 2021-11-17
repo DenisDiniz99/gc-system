@@ -11,13 +11,6 @@ exports.getById = async(id) => {
     return data;
 }
 
-exports.getByTitle = async(title) => {
-    let data = await Product.find({
-        title: title
-    });
-    return data;
-}
-
 exports.getBySlug = async(slug) => {
     let data = await Product.find({
         slug: slug
