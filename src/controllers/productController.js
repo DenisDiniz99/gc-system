@@ -77,6 +77,8 @@ exports.create = async(req, res) => {
 
         let result = await service.create(req.body);
 
+        console.log(result);
+
         if(result !== undefined && result !== null){
             res.status(201).send({
                 message: "Produto cadastrado com sucesso"
