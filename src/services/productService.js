@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
+const slugify = require('slugify');
 
 exports.getAll = async() => {
     let data = await Product.find();
@@ -20,7 +21,7 @@ exports.getBySlug = async(slug) => {
 
 exports.create = async(data) => {
     let product = new Product(data);
-    let result = product.save();
+    let result = await product.save();
     return result;
 }
 

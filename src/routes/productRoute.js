@@ -14,8 +14,9 @@ router.post('/', upload.single('image'),
                      check('price').notEmpty().withMessage('O campo Preço é obrigatório'),
                      check('price').isNumeric().withMessage('O campo Preço não está em formato válido'),
                      check('active').notEmpty().withMessage('O campo Ativo? é obrigatório'),
-                     check('tags').notEmpty().withMessage('O campo Tags é obrigatório')], 
-                     //check('slug').isSlug().withMessage('O campo está em formato inválido'
+                     check('tags').notEmpty().withMessage('O campo Tags é obrigatório', 
+                     check('slug').isSlug().withMessage('O campo está em formato inválido'))],
+                     
                      controller.create );
                      
 

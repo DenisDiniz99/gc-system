@@ -3,6 +3,9 @@ const { validationResult } = require('express-validator');
 const jwt = require('../services/Auth/Auth');
 const multer = require('multer');
 const upload = multer({ dest: 'img /' });
+const slugify = require('slugify');
+const bodyParser = require('body-parser');
+const { parse } = require('dotenv');
 
 exports.getAll = async(req, res) => {
     try{
