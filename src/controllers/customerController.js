@@ -94,14 +94,14 @@ exports.create = async(req, res) => {
 
         //Verifica se existem erros na Model
         let {errors} = validationResult(req);
-        //Caso exista algum erro na Model
+        //Se existir algum erro na Model
         //Retorna um Json com os erros
         if(errors.length > 0){
             return res.status(400).send({ message: errors });
         }
         //Se não houver erros tenta criar um novo cliente
         let result = await service.create(req.body);
-        //Se ocorrer a criação com sucesso
+        //Se ocorrer a criação do cliente com sucesso
         //Retorna um status 201
         //Senão retorna um status 400
         if(result !== undefined && result !== null){
@@ -164,15 +164,7 @@ exports.delete = async(req, res) => {
         //Verifica se o usuário possui um token válido
         //E sendo válido, se o usuário possui direitos de admin
         jwt.isAdmin(req, res);
-        //Verifica se existem erros na Model
-        let {errors} = validationResult(req);
-        //Caso exista algum erro na Model
-        //Retorna um Json com os erros
-        if(errors.length > 0){
-            return res.status(400).send({ message: errors });
-        }
-        //Se não houver erros
-        //Tenta excluir o cliente
+        //Tenta excluir o cliente        
         let result = await service.delete(req.params.id);
         //Se ocorrer a exclusão com sucesso
         //Retorna um status 200

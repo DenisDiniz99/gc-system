@@ -61,10 +61,15 @@ exports.getById = async(req, res) => {
 //Função para retornar um produto pelo slug
 exports.getBySlug = async(req, res) => {
     try{
+        //Faz a chamada da função que verifica se existe token
+        //Caso exista, verifica se ele é válido
+        //Caso seja válido, libera a busca de produtos por Slug
         jwt.authorize(req, res);
-
+        //Caso exista um token válido
+        //Faz a busca por produto passando o Slug
         let data = await service.getBySlug(req.params.slug);
-
+        //Se existir produtos cadastrados com o Slug informado, retorna os dados do produto
+        //Senão envia uma mensagem de aviso
         if(data !== undefined && data !== null){
             res.status(200).send(data);
         }else{
@@ -83,16 +88,21 @@ exports.getBySlug = async(req, res) => {
 //Função para Criar um novo Produto na base de dados
 exports.create = async(req, res) => {
     try{
+        //Verifica se o usuário possui um token válido
+        //E sendo válido, se o usuário possui direitos de admin
         jwt.isAdmin(req, res);
-
+        //Verifica se existem erros na Model
         let {errors} = validationResult(req);
-
+        //Se existir algum erro na Model
+        //Retorna um Json com os erros
         if(errors.length >  0){
             return res.status(400).send({message: errors});
         }
-
+        //Se não houver erros tenta criar um novo cliente
         let result = await service.create(req);
-
+        //Se ocorrer a criação do produto com sucesso
+        //Retorna um status 201
+        //Senão retorna um status 400
         if(result !== undefined && result !== null){
             res.status(201).send({
                 message: "Produto cadastrado com sucesso"
@@ -101,6 +111,68 @@ exports.create = async(req, res) => {
             res.status(400).send({
                 message: "Não foi possível salvar o produto"
             })
+        }
+    }catch(e){
+        res.status(500).send({
+            message: "Falha ao tentar executar sua requisição"
+        });
+    }
+}
+
+//Função para Atualizar um Produto
+exports.update = async(req, res) => {
+    try{
+        //Verifica se o usuário possui um token válido
+        //E sendo válido, se o usuário possui direitos de admin
+        jwt.isAdmin(req, res);
+        //Verifica se existem erros na Model
+        let { errors } = validationResult(req);
+        //Se existir algum erro na Model
+        //Retorna um Json com os erros
+        if(errors.length > 0){
+            return res.status(400).send({ message: errors });
+        }
+        //Se não houver erros
+        //Tenta atualizar os dados do produto
+        let result = service.update(req.params.id, req.body);
+        //Se ocorrer a atualização com sucesso
+        //Retorna um status 200
+        //Senão retorna um status 400
+        if(result !== undefined && result !== null){
+            res.status(200).send({
+                message: "Produto atualizado com sucesso"
+            });
+        }else{
+            res.status(400).send({
+                message: "Não foi possível atualizar o produto"
+            });
+        }
+    }catch(e){
+        res.status(500).send({
+            message: "Falha ao tentar executar sua requisição"
+        });
+    }
+}
+
+//Função para excluir um Produto
+exports.delete = async(req, res) => {
+    try{
+        //Verifica se o usuário possui um token válido
+        //E sendo válido, se o usuário possui direitos de admin
+        jwt.isAdmin(req, res);
+        //Tenta excluir o produto
+        let result = service.delete(req.params.id);
+        //Se ocorrer a exclusão com sucesso
+        //Retorna um status 200
+        //Senão retorna um status 400
+        if(result !== undefined && result !== null){
+            res.status(200).send({
+                message: "Produto excluido com sucesso"
+            });
+        }else{
+            res.status(400).send({
+                message: "Não foi possível excluir o produto"
+            });
         }
     }catch(e){
         res.status(500).send({
