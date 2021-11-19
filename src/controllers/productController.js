@@ -3,16 +3,21 @@ const { validationResult } = require('express-validator');
 const jwt = require('../services/Auth/Auth');
 const multer = require('multer');
 const upload = multer({ dest: 'img /' });
-const slugify = require('slugify');
-const bodyParser = require('body-parser');
-const { parse } = require('dotenv');
 
+
+//Função para retornar todos os produtos
 exports.getAll = async(req, res) => {
     try{
+        //Faz a chamada da função que verifica se existe token
+        //Caso exista, verifica se ele é válido
+        //Caso seja válido, libera a busca de produtos
         jwt.authorize(req, res);
 
+        //Caso exista um token válido
+        //Faz-se a busca por produtos
         let data = await service.getAll();
-        
+        //Se existir produtos cadastrados retorna os mesmos
+        //Senão envia uma mensagem de produtos não encontrados
         if(data !== undefined && data !== null){
             res.status(200).send(data);
         }else{
@@ -27,12 +32,18 @@ exports.getAll = async(req, res) => {
     }
 }
 
+//Função para retornar um produto pelo Id
 exports.getById = async(req, res) => {
     try{
+        //Faz a chamada da função que verifica se existe token
+        //Caso exista, verifica se ele é válido
+        //Caso seja válido, libera a busca de produtos por id
         jwt.authorize(req, res);
-
+        //Caso exista um token válido
+        //Faz-se a busca por produto passando o Id
         let data = await service.getById(req.params.id);
-
+        //Se existir produtos cadastrados com o Id informado, retorna os dados do produto
+        //Senão envia uma mensagem de aviso
         if(data !== undefined && data !== null){
             res.status(200).send(data);
         }else{
@@ -47,6 +58,7 @@ exports.getById = async(req, res) => {
     }
 }
 
+//Função para retornar um produto pelo slug
 exports.getBySlug = async(req, res) => {
     try{
         jwt.authorize(req, res);
@@ -68,6 +80,7 @@ exports.getBySlug = async(req, res) => {
     }
 }
 
+//Função para Criar um novo Produto na base de dados
 exports.create = async(req, res) => {
     try{
         jwt.isAdmin(req, res);
@@ -78,9 +91,7 @@ exports.create = async(req, res) => {
             return res.status(400).send({message: errors});
         }
 
-        let result = await service.create(req.body);
-
-        console.log(result);
+        let result = await service.create(req);
 
         if(result !== undefined && result !== null){
             res.status(201).send({
@@ -97,4 +108,3 @@ exports.create = async(req, res) => {
         });
     }
 }
-

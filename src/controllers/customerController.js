@@ -42,7 +42,7 @@ exports.getByActiveStatus = async(req, res) => {
         //Faz-se a busca por clientes
         let data = await service.getByActiveStatus();
         //Se existir clientes cadastrados retorna os mesmos
-        //Senão envia uma mensagem na aviso
+        //Senão envia uma mensagem de aviso
         if(data !== undefined && data !== null){
             res.status(200).send(data);
         }else{
@@ -61,11 +61,15 @@ exports.getByActiveStatus = async(req, res) => {
 //Função para retornar Clientes por Id
 exports.getById = async(req, res) => {
     try{
+        //Faz a chamada da função que verifica se existe token
+        //Caso exista, verifica se ele é válido
+        //Caso seja válido, libera a busca de clientes por id
         jwt.authorize(req, res);
-
+        //Caso exista um token válido
+        //Faz-se a busca por clientes passando o Id
         let data = await service.getById(req.params.id);
-        console.log(data);
-
+        //Se existir clientes cadastrados com o Id informado, retorna os dados do cliente
+        //Senão envia uma mensagem de aviso
         if(data !== undefined && data !== null){
             res.status(200).send(data);
         }else{

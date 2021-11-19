@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
-const slugify = require('slugify');
 
 exports.getAll = async() => {
     let data = await Product.find();
