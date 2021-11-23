@@ -19,11 +19,17 @@ exports.getAll = async(req, res) => {
         //Se existir produtos cadastrados retorna os mesmos
         //Senão envia uma mensagem de produtos não encontrados
         if(data !== undefined && data !== null){
-            res.status(200).send(data);
+            if(data.length > 0){
+                res.status(200).send(data);
+            }else{
+                res.status(404).send({
+                    message: "Não foram encontrados produtos em nossa base de dados"
+                });
+            }
         }else{
             res.status(400).send({
-                message: "Não foram encontrados produtos em nossa base de dados"
-            })
+                message: "Ocorreu um erro ao tentar localizar os produtos na base de dados"
+            });
         }
     }catch(e){
         res.status(500).send({
@@ -98,8 +104,17 @@ exports.create = async(req, res) => {
         if(errors.length >  0){
             return res.status(400).send({message: errors});
         }
-        //Se não houver erros tenta criar um novo cliente
-        let result = await service.create(req);
+        let img = req.file.filename;
+        //Se não houver erros tenta criar um novo produto
+        let result = await service.create({
+            title: req.body.title,
+            description: req.body.description,
+            slug: req.body.slug,
+            price: req.body.price,
+            active: req.body.active,
+            tags: req.body.tags,
+            image: img
+        });
         //Se ocorrer a criação do produto com sucesso
         //Retorna um status 201
         //Senão retorna um status 400

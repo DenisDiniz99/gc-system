@@ -7,7 +7,7 @@ const { check } = require('express-validator');
 const multer = require('multer');
 const upload = multer({ dest: 'img /' });
 
-
+//Rota para criar um novo produto
 router.post('/', upload.single('image'), 
                     [check('title').notEmpty().withMessage('O campo Título é obrigatório'),
                      check('description').notEmpty().withMessage('O campo Descrição é obrigatório'),
@@ -15,9 +15,16 @@ router.post('/', upload.single('image'),
                      check('price').isNumeric().withMessage('O campo Preço não está em formato válido'),
                      check('active').notEmpty().withMessage('O campo Ativo? é obrigatório'),
                      check('tags').notEmpty().withMessage('O campo Tags é obrigatório', 
-                     check('slug').isSlug().withMessage('O campo está em formato inválido'))],
-                     
+                     )],
+//check('slug').isSlug().withMessage('O campo está em formato inválido')           
                      controller.create );
-                     
+//Rota para obter todos os produtos
+router.get('/', controller.getAll);
+//Rota para obter produto pelo id
+router.get('/id', controller.getById);
+//Rota para obetr produto pelo slug
+router.get('/slug', controller.getBySlug);
+
+
 
 module.exports = router;

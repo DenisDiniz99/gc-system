@@ -17,10 +17,16 @@ exports.getAll = async(req, res) => {
         //Se existir clientes cadastrados retorna os mesmos
         //Senão envia uma mensagem de clientes não encontrados
         if(data !== undefined && data !== null){
-            res.status(200).send(data);
+            if(data.length > 0){
+                res.status(200).send(data);
+            }else{
+                res.status(404).send({
+                    message: "Não foram encontrados clientes em nossa base de dados"
+                });
+            }
         }else{
             res.status(400).send({
-                message: "Não foram encontrados clientes em nossa base de dados"
+                message: "Ocorreu um erro ao tentar localizar os clientes na base de dados"
             });
         }
     }catch(e){

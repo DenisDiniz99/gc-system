@@ -53,7 +53,6 @@ exports.signIn = async(req, res, next) =>{
             });
         }
         //Se o usuário existir, gera um token para o mesmo
-        console.log(user);
         let token = await auth.generateToken(user);       
         //Retorna um status 200 com o token do usuário
         return res.status(200).send({
