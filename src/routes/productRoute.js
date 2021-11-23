@@ -15,15 +15,32 @@ router.post('/', upload.single('image'),
                      check('price').isNumeric().withMessage('O campo Preço não está em formato válido'),
                      check('active').notEmpty().withMessage('O campo Ativo? é obrigatório'),
                      check('tags').notEmpty().withMessage('O campo Tags é obrigatório', 
-                     )],
-//check('slug').isSlug().withMessage('O campo está em formato inválido')           
+                     check('slug').isSlug().withMessage('O campo está em formato inválido'))],
+         
                      controller.create );
+
+//Rota para atualizar um produto
+router.put('/:id', [check('title').notEmpty().withMessage('O campo Título é obrigatório'),
+                   check('description').notEmpty().withMessage('O campo Descrição é obrigatório'),
+                   check('price').notEmpty().withMessage('O campo Preço é obrigatório'),
+                   check('price').isNumeric().withMessage('O campo Preço não está em formato válido'),
+                   check('active').notEmpty().withMessage('O campo Ativo? é obrigatório'),
+                   check('tags').notEmpty().withMessage('O campo Tags é obrigatório', 
+                   check('slug').isSlug().withMessage('O campo está em formato inválido'))],
+                   
+                   controller.update);
+
+//Rota para atualizar imagem do produto
+router.put("/updateImage/:id", upload.single('image'), controller.updateImage);
+
 //Rota para obter todos os produtos
 router.get('/', controller.getAll);
+
 //Rota para obter produto pelo id
-router.get('/id', controller.getById);
+router.get('/:id', controller.getById);
+
 //Rota para obetr produto pelo slug
-router.get('/slug', controller.getBySlug);
+router.get('/:slug', controller.getBySlug);
 
 
 

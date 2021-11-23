@@ -38,8 +38,8 @@ exports.update = async(id, data) => {
     return result;
 }
 
-exports.updateImage = async(image) => {
-    let result = Product.findByIdAndUpdate({
+exports.updateImage = async(id, image) => {
+    let result = Product.findByIdAndUpdate(id, {
         $set:{
             image: image
         }

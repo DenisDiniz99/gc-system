@@ -104,8 +104,8 @@ exports.create = async(req, res) => {
         if(errors.length >  0){
             return res.status(400).send({message: errors});
         }
-        let img = req.file.filename;
         //Se não houver erros tenta criar um novo produto
+        let img = req.file.filename;
         let result = await service.create({
             title: req.body.title,
             description: req.body.description,
@@ -149,7 +149,7 @@ exports.update = async(req, res) => {
         }
         //Se não houver erros
         //Tenta atualizar os dados do produto
-        let result = service.update(req.params.id, req.body);
+        let result = await service.update(req.params.id, req.body);
         //Se ocorrer a atualização com sucesso
         //Retorna um status 200
         //Senão retorna um status 400
@@ -160,6 +160,39 @@ exports.update = async(req, res) => {
         }else{
             res.status(400).send({
                 message: "Não foi possível atualizar o produto"
+            });
+        }
+    }catch(e){
+        res.status(500).send({
+            message: "Falha ao tentar executar sua requisição"
+        });
+    }
+}
+
+//Função para atualizar imagem do Produto
+exports.updateImage = async(req, res) => {
+    try{
+        jwt.isAdmin(req, res);
+
+        let img = req.file.filename;
+        console.log(img);
+        if(img !== ""){
+            let result = await service.updateImage(req.params.id, img);
+
+            console.log(result);
+            
+            if(result !== undefined && result !== null){
+                res.status(200).sends({
+                    message: "Imagem atualizada com sucesso"
+                });
+            }else{
+                res.status(400).send({
+                    message: "Não foi possível atualizar a imagem do produto"
+                })
+            }
+        }else{
+            res.status(400).send({
+                message: "Escolha uma imagem antes de atualizar"
             });
         }
     }catch(e){
