@@ -118,7 +118,7 @@ exports.create = async(req, res) => {
         else{
             res.status(400).send({
                 message: "Não foi possível salvar o cliente"
-            })
+            });
         }
     }catch(e){
         res.status(500).send({

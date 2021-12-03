@@ -6,6 +6,13 @@ exports.getAll = async() => {
     return data;
 }
 
+exports.getByActiveStatus = async() =>{
+    let data = await Product.find({
+        active: true
+    });
+    return data;
+}
+
 exports.getById = async(id) => {
     let data = await Product.findById(id);
     return data;
@@ -32,7 +39,7 @@ exports.update = async(id, data) => {
             slug: data.slug,
             price: data.price,
             active: data.active,
-            tags: [data.tags]  
+            tags: data.tags
         }
     });
     return result;

@@ -38,6 +38,38 @@ exports.getAll = async(req, res) => {
     }
 }
 
+exports.getByActiveStatus = async(req, res) =>{
+    try{
+        //Faz a chamada da função que verifica se existe token
+        //Caso exista, verifica se ele é válido
+        //Caso seja válido, libera a busca de produtos
+        jwt.authorize(req, res);
+
+        //Caso exista um token válido
+        //Faz-se a busca por produtos ativos
+        let data = await service.getByActiveStatus();
+        //Se existir produtos ativos cadastrados retorna os mesmos
+        //Senão envia uma mensagem de produtos não encontrados
+        if(data !== undefined && data !== null){
+            if(data.length > 0){
+                res.status(200).send(data);
+            }else{
+                res.status(404).send({
+                    message: "Não foram encontrados produtos ativos em nossa base de dados"
+                });
+            }
+        }else{
+            res.status(400).send({
+                message: "Ocorreu um erro ao tentar localizar os produtos na base de dados"
+            });
+        }
+    }catch(e){
+        res.status(500).send({
+            message: "Falha ao tentar executar sua requisição"
+        });
+    }
+}
+
 //Função para retornar um produto pelo Id
 exports.getById = async(req, res) => {
     try{
@@ -125,7 +157,7 @@ exports.create = async(req, res) => {
         }else{
             res.status(400).send({
                 message: "Não foi possível salvar o produto"
-            })
+            });
         }
     }catch(e){
         res.status(500).send({
@@ -175,12 +207,10 @@ exports.updateImage = async(req, res) => {
         jwt.isAdmin(req, res);
 
         let img = req.file.filename;
-        console.log(img);
+
         if(img !== ""){
             let result = await service.updateImage(req.params.id, img);
-
-            console.log(result);
-            
+     
             if(result !== undefined && result !== null){
                 res.status(200).sends({
                     message: "Imagem atualizada com sucesso"
@@ -188,7 +218,7 @@ exports.updateImage = async(req, res) => {
             }else{
                 res.status(400).send({
                     message: "Não foi possível atualizar a imagem do produto"
-                })
+                });
             }
         }else{
             res.status(400).send({
