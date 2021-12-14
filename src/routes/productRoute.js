@@ -31,6 +31,9 @@ router.put('/:id', [check('title').notEmpty().withMessage('O campo Título é ob
 //Rota para atualizar imagem do produto
 router.put("/updateImage/:id", upload.single('image'), controller.updateImage);
 
+//Rota para excluir produto
+router.delete("/:id", controller.delete);
+
 //Rota para obter todos os produtos
 router.get('/', controller.getAll);
 

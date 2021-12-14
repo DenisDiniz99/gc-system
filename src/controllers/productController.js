@@ -147,6 +147,7 @@ exports.create = async(req, res) => {
             tags: req.body.tags,
             image: img
         });
+        console.log(result);
         //Se ocorrer a criação do produto com sucesso
         //Retorna um status 201
         //Senão retorna um status 400
@@ -210,7 +211,7 @@ exports.updateImage = async(req, res) => {
 
         if(img !== ""){
             let result = await service.updateImage(req.params.id, img);
-     
+
             if(result !== undefined && result !== null){
                 res.status(200).sends({
                     message: "Imagem atualizada com sucesso"

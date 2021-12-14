@@ -48,7 +48,7 @@ exports.update = async(id, data) => {
 exports.updateImage = async(id, image) => {
     let result = Product.findByIdAndUpdate(id, {
         $set:{
-            image: image
+            image: image.image
         }
     });
     return result;
