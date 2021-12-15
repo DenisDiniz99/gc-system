@@ -211,9 +211,9 @@ exports.updateImage = async(req, res) => {
 
         if(img !== ""){
             let result = await service.updateImage(req.params.id, img);
-
+            
             if(result !== undefined && result !== null){
-                res.status(200).sends({
+                res.status(200).send({
                     message: "Imagem atualizada com sucesso"
                 });
             }else{

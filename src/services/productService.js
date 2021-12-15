@@ -46,15 +46,16 @@ exports.update = async(id, data) => {
 }
 
 exports.updateImage = async(id, image) => {
-    let result = Product.findByIdAndUpdate(id, {
+    let result = await Product.findByIdAndUpdate(id, {
         $set:{
-            image: image.image
+            image: image
         }
     });
+    
     return result;
 }
 
 exports.delete = async(id) => {
-    let result = Product.findByIdAndRemove(id);
+    let result = await Product.findByIdAndRemove(id);
     return result;
 }
