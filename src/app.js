@@ -34,6 +34,7 @@ const indexRoute = require('./routes/index');
 const customerRoute = require('./routes/customerRoute');
 const userRoute = require('./routes/userRoute');
 const productRoute = require('./routes/productRoute');
+const orderRoute = require('./routes/orderRoute');
 
 
 //configura as rotas
@@ -41,6 +42,7 @@ app.use('/', indexRoute);
 app.use('/customers', customerRoute);
 app.use('/user', userRoute);
 app.use('/product', productRoute);
+app.use('/order', orderRoute);
 
 
 //Inicializa o servidor
