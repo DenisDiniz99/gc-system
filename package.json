@@ -15,6 +15,7 @@
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.2",
+    "guid": "0.0.12",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
     "mongoose": "^6.0.6",

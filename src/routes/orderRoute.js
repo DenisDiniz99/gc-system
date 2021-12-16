@@ -8,18 +8,13 @@ router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
 
 router.post('/', [check('customer').notEmpty().withMessage('O campo Cliente é obrigatório'),
-                  check('status').notEmpty().withMessage('O campo Status é obrigatório'),
-                  check('itens.quantity').notEmpty().withMessage('O campo Quantidade é obrigatório'),
-                  check('itens.quantity').isNumeric().withMessage('O campo Quantidade deve ser numérico'),
-                  check('itens.product').notEmpty().withMessage('O campo Produto é obrigatório')],
+                  check('status').notEmpty().withMessage('O campo Status é obrigatório')],
+                  
                   
                   controller.create);
 
 router.put('/:id', [check('customer').notEmpty().withMessage('O campo Cliente é obrigatório'),
-                    check('status').notEmpty().withMessage('O campo Status é obrigatório'),
-                    check('itens.quantity').notEmpty().withMessage('O campo Quantidade é obrigatório'),
-                    check('itens.quantity').isNumeric().withMessage('O campo Quantidade deve ser numérico'),
-                    check('itens.product').notEmpty().withMessage('O campo Produto é obrigatório')], 
+                    check('status').notEmpty().withMessage('O campo Status é obrigatório')],
                     
                     controller.update);
 

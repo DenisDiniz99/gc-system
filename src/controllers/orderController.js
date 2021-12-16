@@ -1,6 +1,7 @@
 const service = require('../services/orderService');
 const { validationResult } = require('express-validator');
 const jwt = require('../services/Auth/Auth');
+const guid = require('guid');
 
 exports.getAll = async(req, res) => {
     try{
@@ -75,7 +76,13 @@ exports.create = async(req, res) => {
             return res.status(400).send({ message: errors });
         }
         //Se não houver erros tenta criar um novo pedido
-        let result = await service.create(req.body);
+        let data = {
+            customer: req.body.customer,
+            number: guid.raw.substring(0, 6),
+            items: req.body.items
+        };
+        console.log(data);
+        let result = await service.create(data);
         //Se ocorrer a criação do pedido com sucesso
         //Retorna um status 201
         //Senão retorna um status 400

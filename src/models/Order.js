@@ -11,13 +11,17 @@ const orderSchema = new Schema({
         require: true,
         default: Date.now
     },
+    number: {
+        type: String,
+        required: true
+    },
     status: {
         type: String,
         require: true,
         enum: ['created', 'canceled', 'done'],
         default: 'created'
     },
-    itens:[{
+    items:[{
         quantity:{
             type: Number,
             require: true,
