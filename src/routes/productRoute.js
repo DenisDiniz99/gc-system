@@ -16,7 +16,7 @@ router.post('/', upload.single('image'),
                      check('active').notEmpty().withMessage('O campo Ativo é obrigatório'),
                      check('tags').notEmpty().withMessage('O campo Tags é obrigatório')],
          
-                     controller.create );
+                     controller.create);
 
 //Rota para atualizar um produto
 router.put('/:id', [check('title').notEmpty().withMessage('O campo Título é obrigatório'),
